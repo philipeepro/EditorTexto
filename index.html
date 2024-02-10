@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Texto</title>
+</head>
+<body>
+    <textarea id="editor" style="width: 95vw;height: 80vh;"></textarea>
+    <br />
+    <input type="file" id="file_input" />
+    <br /><br />
+    <button id="save">Salvar</button>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const fileInput = document.getElementById('file_input');
+        const btnSave = document.getElementById('save');
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                editor.value = reader.result;
+            };
+
+            reader.readAsText(file);
+        })
+
+        btnSave.addEventListener("click", () => {
+            const text = editor.value;
+            const blob = new Blob([text], { type: "text/plain"});
+            const link = document.createElement("a");
+
+            link.download = "arquivo_texto.txt";
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        });
+    </script>
+</body>
+</html>
